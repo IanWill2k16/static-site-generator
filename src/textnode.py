@@ -15,7 +15,7 @@ class TextNode:
     def text_node_to_html_node(self):
     
         if self.text_type == "text_type_text":
-            return LeafNode(self.text)
+            return LeafNode(None, self.text)
         elif self.text_type == "text_type_bold":
             return LeafNode("b", self.text)
         elif self.text_type == "text_type_italic":
@@ -25,7 +25,7 @@ class TextNode:
         elif self.text_type == "text_type_link":
             return LeafNode("a", self.text, {"href":self.url})
         elif self.text_type == "text_type_image":
-            return LeafNode("img", "", {"href":self.url, "alt":self.text})
+            return LeafNode("img", "", {"src": self.url, "alt": self.text})
         else:
             raise Exception("Text type not supported")
         

@@ -13,17 +13,17 @@ class HTMLNode():
             return ""
         html_props = ""
         for k, v in self.props.items():
-            html_props += f' {k}="{v}"'
+            html_props += f" {k}={v}"
         return html_props
     
     def __repr__(self):
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
     
 class LeafNode(HTMLNode):
-    def __init__(self, tag, value, props):
+    def __init__(self, tag, value, props=None):
         if value is None:
             raise ValueError("LeafNode must have a value")
-        super().__init__(tag, value, props)
+        super().__init__(tag, value, None, props)
         self.children = None
 
     def to_html(self):
