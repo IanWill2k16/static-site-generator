@@ -37,3 +37,6 @@ class TextNode():
         if text_node.text_type.value == "image":
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         raise ValueError(f'Invalid text type: {text_node.text_type}')
+    
+    def text(self):
+        return self.text
