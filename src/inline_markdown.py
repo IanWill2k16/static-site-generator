@@ -44,10 +44,10 @@ def split_nodes_image(old_nodes):
             split_text = working_text.split(f'![{image[i][0]}]({image[i][1]})')
             if split_text[0] != "":
                 split_nodes.append(TextNode(split_text[0], TextType.TEXT))
-            split_nodes.append(TextNode(f'{image[i][0]}', TextType.LINK, f'{image[i][1]}'))
+            split_nodes.append(TextNode(f'{image[i][0]}', TextType.IMAGE, f'{image[i][1]}'))
             working_text = split_text[1]
         if working_text != "":
-            split_nodes.append(TextNode(split_text[1], TextType.TEXT))
+            split_nodes.append(TextNode(working_text, TextType.TEXT))
         new_nodes.extend(split_nodes)
     return new_nodes
 
@@ -67,7 +67,14 @@ def split_nodes_link(old_nodes):
             split_nodes.append(TextNode(f'{links[i][0]}', TextType.LINK, f'{links[i][1]}'))
             working_text = split_text[1]
         if working_text != "":
-            split_nodes.append(TextNode(split_text[1], TextType.TEXT))
+            split_nodes.append(TextNode(working_text, TextType.TEXT))
         new_nodes.extend(split_nodes)
     return new_nodes
 
+def text_to_textnodes(text):
+    node = [TextNode(text, TextType.TEXT)]
+    code_split_nodes = split_nodes_delimeter(node, '`', TextType.CODE)
+    bold_split_nodes = split_nodes_delimeter(code_split_nodes, '**', TextType.BOLD)
+    italic_split_nodes = split_nodes_delimeter(bold_split_nodes, '*', TextType.ITALIC)
+    image_split_nodes = split_nodes_image(italic_split_nodes)
+    return split_nodes_link(image_split_nodes)
