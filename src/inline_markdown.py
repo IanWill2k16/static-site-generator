@@ -42,11 +42,11 @@ def split_nodes_image(old_nodes):
         working_text = node.text
         for i in range(len(image)):
             split_text = working_text.split(f'![{image[i][0]}]({image[i][1]})')
-            split_nodes.append(TextNode(split_text[0], TextType.TEXT))
+            if split_text[0] != "":
+                split_nodes.append(TextNode(split_text[0], TextType.TEXT))
             split_nodes.append(TextNode(f'{image[i][0]}', TextType.LINK, f'{image[i][1]}'))
-            if i < len(image):
-                working_text = split_text[1]
-                continue
+            working_text = split_text[1]
+        if working_text != "":
             split_nodes.append(TextNode(split_text[1], TextType.TEXT))
         new_nodes.extend(split_nodes)
     return new_nodes
@@ -62,13 +62,12 @@ def split_nodes_link(old_nodes):
         working_text = node.text
         for i in range(len(links)):
             split_text = working_text.split(f'[{links[i][0]}]({links[i][1]})')
-            split_nodes.append(TextNode(split_text[0], TextType.TEXT))
+            if split_text[0] != "":
+                split_nodes.append(TextNode(split_text[0], TextType.TEXT))
             split_nodes.append(TextNode(f'{links[i][0]}', TextType.LINK, f'{links[i][1]}'))
-            if i < len(links):
-                working_text = split_text[1]
-                continue
+            working_text = split_text[1]
+        if working_text != "":
             split_nodes.append(TextNode(split_text[1], TextType.TEXT))
         new_nodes.extend(split_nodes)
-    print(new_nodes)
     return new_nodes
 
