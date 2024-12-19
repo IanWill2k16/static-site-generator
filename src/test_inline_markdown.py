@@ -95,5 +95,27 @@ class TestInlineMarkdown(unittest.TestCase):
         expected = [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
         self.assertEqual(result, expected)
 
+    def test_split_nodes_link(self):
+        node = [TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT,)]
+        result = split_nodes_link(node)
+        expected = [
+            TextNode("This is text with a link ", TextType.TEXT), 
+            TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"), 
+            TextNode(" and ", TextType.TEXT),
+            TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+            ]
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_image(self):
+        node = [TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT,)]
+        result = split_nodes_image(node)
+        expected = [
+            TextNode("This is text with a ", TextType.TEXT), 
+            TextNode("rick roll", TextType.LINK, "https://i.imgur.com/aKaOqIh.gif"), 
+            TextNode(" and ", TextType.TEXT),
+            TextNode("obi wan", TextType.LINK, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            ]
+        self.assertEqual(result, expected)
+
 if __name__ == "__main__":
     unittest.main()
