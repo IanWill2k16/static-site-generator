@@ -24,10 +24,10 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
 
     def test_block_to_block_type(self):
         block1 = block_to_block_type('#### This is a heading')
-        block2 = block_to_block_type('```This is a code block```')
-        block3 = block_to_block_type('>This is a quote block')
-        block4 = block_to_block_type('* This is an unordered list')
-        block5 = block_to_block_type('. This is an ordered list')
+        block2 = block_to_block_type('```\nThis is a code block\n```')
+        block3 = block_to_block_type('>This is a quote\n> block')
+        block4 = block_to_block_type('* This is an \n* unordered list')
+        block5 = block_to_block_type('1. This is an \n2. ordered list')
         block6 = block_to_block_type('This is a normal paragraph')
         self.assertEqual(block1, "heading")
         self.assertEqual(block2, "code")
