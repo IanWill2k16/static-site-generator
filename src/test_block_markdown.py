@@ -28,13 +28,13 @@ This is a paragraph of text. It has some **bold** and *italic* words inside of i
         block3 = block_to_block_type('>This is a quote block')
         block4 = block_to_block_type('* This is an unordered list')
         block5 = block_to_block_type('. This is an ordered list')
-        block6 = block_to_block_type('This is a normal paragraph'
+        block6 = block_to_block_type('This is a normal paragraph')
         self.assertEqual(block1, "heading")
         self.assertEqual(block2, "code")
         self.assertEqual(block3, "quote")
         self.assertEqual(block4, "unordered list")
         self.assertEqual(block5, "ordered list")
-        self.assertEqual(block6), "paragraph")
+        self.assertEqual(block6, "paragraph")
 
 
 if __name__ == "__main__":
