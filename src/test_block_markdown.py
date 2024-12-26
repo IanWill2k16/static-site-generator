@@ -46,8 +46,8 @@ of lots of lines
 
 - This is a list
 - Of things
-* We're splitting
-* it up
+- We are splitting
+- it up
 
 1. This is
 2. an ordered
@@ -66,8 +66,33 @@ lines
 ```
 """
         result = markdown_to_html_node(markdown)
-        print(result)
-        expected = "?"
+        expected = ParentNode("div", [
+                ParentNode("h4", [TextNode("This is an h4 heading", TextType.TEXT)]),
+                ParentNode("p", [TextNode("This is a paragraph of lots of lines", TextType.TEXT)]),
+                ParentNode("ul", [
+                    ParentNode("li", [TextNode("This is a list", TextType.TEXT)]),
+                    ParentNode("li", [TextNode("Of things", TextType.TEXT)]),
+                    ParentNode("li", [TextNode("We are splitting", TextType.TEXT)]),
+                    ParentNode("li", [TextNode("it up", TextType.TEXT)]),
+                ]),
+                ParentNode("ol", [
+                    ParentNode("li", [TextNode("This is", TextType.TEXT)]),
+                    ParentNode("li", [TextNode("an ordered", TextType.TEXT)]),
+                    ParentNode("li", [TextNode("List", TextType.TEXT)]),
+                ]),
+                ParentNode("blockquote", [
+                    TextNode("This is a", TextType.TEXT),
+                    TextNode("block quote", TextType.TEXT),
+                    TextNode("with multiple", TextType.TEXT),
+                    TextNode("lines", TextType.TEXT),
+                ]),
+                ParentNode("pre", ParentNode("code", [
+                    TextNode("This is a", TextType.TEXT),
+                    TextNode("code block", TextType.TEXT),
+                    TextNode("with multiple", TextType.TEXT),
+                    TextNode("lines", TextType.TEXT)
+                ]))
+            ])
         self.assertEqual(result, expected)
 
 

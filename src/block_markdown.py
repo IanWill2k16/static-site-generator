@@ -31,9 +31,14 @@ def block_to_block_type(block):
             if not line.startswith(">"):
                 return block_type_paragraph
         return block_type_quote
-    if block.startswith("* ") or block.startswith("- "):
+    if block.startswith("* "):
         for line in lines:
             if not line.startswith("* "):
+                return block_type_paragraph
+        return block_type_ulist
+    if block.startswith("- "):
+        for line in lines:
+            if not line.startswith("- "):
                 return block_type_paragraph
         return block_type_ulist
     if block.startswith("1. "):
@@ -49,48 +54,50 @@ def markdown_to_html_node(markdown):
     for block in blocks:
         block_type = block_to_block_type(block)
         if block_type == block_type_heading:
-            if block_type.startswith("#"):
-                nodes.append(ParentNode("h1", text_to_textnodes(block)))
-            if block_type.startswith("##"):
-                nodes.append(ParentNode("h2", text_to_textnodes(block)))
-            if block_type.startswith("###"):
-                nodes.append(ParentNode("h3", text_to_textnodes(block)))
-            if block_type.startswith("####"):
-                nodes.append(ParentNode("h4", text_to_textnodes(block)))
-            if block_type.startswith("#####"):
-                nodes.append(ParentNode("h5", text_to_textnodes(block)))
-            if block_type.startswith("#######"):
-                nodes.append(ParentNode("h6", text_to_textnodes(block)))
+            heading = block.split(" ")[0].count("#")
+            new_text = " ".join(block.split(" ")[1:])
+            nodes.append(ParentNode(f"h{heading}", text_to_textnodes(new_text)))
         if block_type == block_type_paragraph:
-            nodes.append(ParentNode("p", text_to_textnodes(block)))
+            lines = block.split("\n")
+            new_line = ""
+            for line in lines:
+                new_line += f"{line.strip()} "
+            nodes.append(ParentNode("p", text_to_textnodes(new_line.strip())))
         if block_type == block_type_code:
-            block = block.lstrip('```\n')
-            block = block.rstrip('\n```')
-            blocknode = ParentNode("code", block)
+            new_text = []
+            block = block.lstrip('```')
+            block = block.rstrip('```')
+            lines = block.split("\n")
+            for line in lines:
+                if line == "":
+                    continue
+                line += "\n"
+                new_text.append(text_to_textnodes(line.strip())[0])
+            blocknode = ParentNode("code", new_text)
             nodes.append(ParentNode("pre", blocknode))
         if block_type == block_type_quote:
-            text = ''
+            new_text = []
             lines = block.split("\n")
             for line in lines:
                 line = line.lstrip("> ")
-                text += line + "\n"
-            nodes.append(ParentNode("blockquote", text_to_textnodes(text.strip())))
+                new_text.append(text_to_textnodes(line.strip())[0])
+            nodes.append(ParentNode("blockquote", new_text))
         if block_type == block_type_ulist:
             child_nodes = []
             lines = block.split("\n")
             for line in lines:
-                print(line)
                 line = line.lstrip('- ')
                 line = line.lstrip('* ')
-                child_nodes.append(ParentNode("ul", text_to_textnodes(line)))
-            nodes.append(ParentNode("li", child_nodes))
+                child_nodes.append(ParentNode("li", text_to_textnodes(line)))
+            nodes.append(ParentNode("ul", child_nodes))
         if block_type == block_type_olist:
             child_nodes = []
             lines = block.split("\n")
             for i in range(len(lines)):
-                line = lines[i].lstrip(f"{i + 1} ")
-                child_nodes.append(ParentNode("ol", text_to_textnodes(line)))
-            nodes.append(ParentNode("li", child_nodes))
-
-    return nodes
+                line = lines[i].lstrip(f"{i + 1}. ")
+                child_nodes.append(ParentNode("li", text_to_textnodes(line)))
+            nodes.append(ParentNode("ol", child_nodes))
+    fin = ParentNode("div", nodes, None)
+    # print(fin.tag)
+    return fin
     
