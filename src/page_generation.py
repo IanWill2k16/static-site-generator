@@ -25,5 +25,5 @@ def generate_page(from_path, template_path, dest_path):
 
     template = template.replace('{{ Title }}', title)
     template = template.replace('{{ Content }}', content_html)
-
-    print(template)
+    
+    return template
