@@ -67,30 +67,28 @@ lines
 """
         result = markdown_to_html_node(markdown)
         expected = ParentNode("div", [
-                ParentNode("h4", [TextNode("This is an h4 heading", TextType.TEXT)]),
-                ParentNode("p", [TextNode("This is a paragraph of lots of lines", TextType.TEXT)]),
+                ParentNode("h4", [LeafNode(None, "This is an h4 heading")]),
+                ParentNode("p", [LeafNode(None, "This is a paragraph of lots of lines")]),
                 ParentNode("ul", [
-                    ParentNode("li", [TextNode("This is a list", TextType.TEXT)]),
-                    ParentNode("li", [TextNode("Of things", TextType.TEXT)]),
-                    ParentNode("li", [TextNode("We are splitting", TextType.TEXT)]),
-                    ParentNode("li", [TextNode("it up", TextType.TEXT)]),
+                    ParentNode("li", [LeafNode(None, "This is a list")]),
+                    ParentNode("li", [LeafNode(None, "Of things")]),
+                    ParentNode("li", [LeafNode(None, "We are splitting")]),
+                    ParentNode("li", [LeafNode(None, "it up")]),
                 ]),
                 ParentNode("ol", [
-                    ParentNode("li", [TextNode("This is", TextType.TEXT)]),
-                    ParentNode("li", [TextNode("an ordered", TextType.TEXT)]),
-                    ParentNode("li", [TextNode("List", TextType.TEXT)]),
+                    ParentNode("li", [LeafNode(None, "This is")]),
+                    ParentNode("li", [LeafNode(None, "an ordered")]),
+                    ParentNode("li", [LeafNode(None, "List")]),
                 ]),
                 ParentNode("blockquote", [
-                    TextNode("This is a", TextType.TEXT),
-                    TextNode("block quote", TextType.TEXT),
-                    TextNode("with multiple", TextType.TEXT),
-                    TextNode("lines", TextType.TEXT),
+                    LeafNode(None, "This is a block quote with multiple lines"),
                 ]),
                 ParentNode("pre", ParentNode("code", [
-                    TextNode("This is a", TextType.TEXT),
-                    TextNode("code block", TextType.TEXT),
-                    TextNode("with multiple", TextType.TEXT),
-                    TextNode("lines", TextType.TEXT)
+                    LeafNode(None, """This is a
+code block
+with multiple
+lines
+""")
                 ]))
             ])
         self.assertEqual(result, expected)
