@@ -37,6 +37,7 @@ def block_to_block_type(block):
                 return block_type_paragraph
         return block_type_ulist
     if block.startswith("- "):
+        lines = block.split('\n')
         for line in lines:
             if not line.startswith("- "):
                 return block_type_paragraph
@@ -89,9 +90,7 @@ def markdown_to_html_node(markdown):
             child_nodes = []
             lines = block.split("\n")
             for line in lines:
-                line = line.lstrip('- ')
-                line = line.lstrip('* ')
-                child_nodes.append(ParentNode("li", text_to_children(line)))
+                child_nodes.append(ParentNode("li", text_to_children(line[2:])))
             nodes.append(ParentNode("ul", child_nodes))
         if block_type == block_type_olist:
             child_nodes = []
